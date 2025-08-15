@@ -306,15 +306,24 @@ export const Marketplace = () => {
               name = rawNameData.trim();
               console.log(`Dataset ${id} using raw string name: "${name}"`);
             } else {
-              // Only decode if it's not a string (i.e., it's a ByteArray)
+              // Only decode if it's not a string (
               const decodedName = decodeByteArray(rawNameData);
               console.log(`Dataset ${id} decoded name: "${decodedName}"`);
               name = decodedName || safeName(id);
               console.log(`Dataset ${id} using decoded/fallback name: "${name}"`);
             }
             
-            const categoryStr = decodeByteArray(category) || "Uncategorized";
-            console.log(`Dataset ${id} category: "${categoryStr}"`);
+            // Category is  coming as a string, use it directly no need to decode 
+            let categoryStr: string;
+            if (typeof category === 'string' && category.trim() !== '') {
+              categoryStr = category.trim();
+              console.log(`Dataset ${id} using raw string category: "${categoryStr}"`);
+            } else {
+              // Only decode if it's not a string 
+              const decodedCategory = decodeByteArray(category);
+              categoryStr = decodedCategory || "Uncategorized";
+              console.log(`Dataset ${id} using decoded/fallback category: "${categoryStr}"`);
+            }
             
             const datasetObj = {
               id: BigInt(id),
